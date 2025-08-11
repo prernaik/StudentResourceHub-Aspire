@@ -137,3 +137,17 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# React build output
+frontend/build/
+
+# Local environment files for frontend
+frontend/.env
+
+# IDE settings (optional but recommended)
+.vscode/
+.idea/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
