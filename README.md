@@ -11,7 +11,7 @@ Currently, students often have to search for notes from seniors, ask in multiple
 - [Bhagyashree Kandri](https://github.com/BhagyashreeKandri)
 - [Mitesh Barak](https://github.com/MiteshBarak)
 - [Manoj Paschapur](https://github.com/ManojPaschapur)
-- [Sahil Kumar]()
+- [Sahil Kumar](https://github.com/Sahil-sahil-1)
 
 ---
 
