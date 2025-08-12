@@ -17,7 +17,7 @@ Currently, students often have to search for notes from seniors, ask in multiple
 
 ## 🛠 Tech Stack
 - Frontend: React.js
-- Backend: Node.js
+- Backend: Node.js with Express
 - Database: MongoDB
 - UI/UX: Figma
 - Hosting: TBD
