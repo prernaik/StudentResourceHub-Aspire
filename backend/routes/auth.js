@@ -1,6 +1,6 @@
    const express = require('express');
    const router = express.Router();
-   const User = require('c:/Users/prerna naik/Documents/GitHub/StudentResourceHub-Aspire/backend/models/user');
+   const User = require('../models/user');
 
    // Register User
    router.post('/register', (req, res) => {
