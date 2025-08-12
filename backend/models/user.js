@@ -1,14 +1,12 @@
-   let users = []; // In-memory user storage
 
-   const User = {
-       create: (user) => {
-           users.push(user);
-           return user;
-       },
-       findById: (id) => users.find(user => user.id === id),
-       findAll: () => users,
-       // Additional methods can be added as needed
-   };
+const mongoose = require('mongoose');
+const userSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    role: { type: String, enum: ['student', 'teacher', 'admin'], default: 'student' },
+    points: { type: Number, default: 0 },
+}, { timestamps: true });
 
-   module.exports = User;
+module.exports = mongoose.model('User', userSchema);
    
