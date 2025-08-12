@@ -14,7 +14,10 @@ interface User {
   createdAt: Date;
   updatedAt: Date;
 }
+```
 
+### Resource
+```typescript
 interface Resource {
   id: string;           // Unique identifier
   title: string;        // Resource title
@@ -29,7 +32,9 @@ interface Resource {
   createdAt: Date;
   updatedAt: Date;
 }
-
+```
+### Comment
+```typescript
 interface Comment {
   id: string;           // Unique identifier
   resourceId: string;   // Reference to Resource
@@ -38,7 +43,16 @@ interface Comment {
   rating: number;       // 1-5 rating
   createdAt: Date;
 }
+```
 
+## API Endpoints
+### 1. Authentication
+#### Register User
+Feature: User Registration,
+Method: POST,
+Endpoint: /api/auth/register,
+Request Body:
+```typescript
 {
   "username": "string (3-20 chars)",
   "email": "string (valid email)",
@@ -46,7 +60,10 @@ interface Comment {
   "role": "student|teacher",
   "college": "string"
 }
+```
 
+#### Success Response (201):
+```typescript
 {
   "message": "Registration successful",
   "user": {
@@ -57,12 +74,25 @@ interface Comment {
     "college": "string"
   }
 }
+```
+#### Error Responses:
+400: Invalid input,
+409: Email already exists
 
+### Login User
+#### Feature: User Login
+Method: POST,
+Endpoint: /api/auth/login,
+Request Body:
+```typescript
 {
   "email": "string",
   "password": "string"
 }
+```
+#### Success Response (200):
 
+```typescript
 {
   "token": "JWT token",
   "user": {
@@ -72,7 +102,19 @@ interface Comment {
     "role": "string"
   }
 }
+```
+#### Error Responses:
+400: Missing credentials,
+401: Invalid credentials
 
+### 2. Resources
+#### Upload Resource
+Feature: Upload Study Material,
+Method: POST,
+Endpoint: /api/resources,
+Headers: Authorization: Bearer <token>,
+Request Body:
+```typescript
 {
   "title": "string",
   "description": "string",
@@ -82,7 +124,9 @@ interface Comment {
   "semester": "number",
   "college": "string"
 }
-
+```
+#### Success Response (201):
+```typescript
 {
   "message": "Resource uploaded successfully",
   "resource": {
@@ -92,7 +136,19 @@ interface Comment {
     "verified": false
   }
 }
-
+```
+#### Get All Resources
+##### Feature: Browse Resources
+##### Method: `GET`
+##### Endpoint: `/api/resources`
+##### Query Params:
+###### `?type=` Filter by type
+###### `?subject=` Filter by subject
+###### `?semester=` Filter by semester
+###### `?college=` Filter by college
+###### `?verified=` true/false
+##### Success Response (200):
+```typescript
 {
   "resources": [
     {
@@ -110,7 +166,13 @@ interface Comment {
     }
   ]
 }
-
+```
+#### Get Single Resource
+##### Feature: View Resource Details
+##### Method: GET
+##### Endpoint: /api/resources/:id
+##### Success Response (200):
+```typescript
 {
   "resource": {
     "id": "string",
@@ -140,12 +202,23 @@ interface Comment {
     ]
   }
 }
+```
 
+### 3. Comments & Ratings
+#### Add Comment
+##### Feature: Comment on Resource
+##### Method: POST
+##### Endpoint: /api/resources/:id/comments
+##### Headers: Authorization: Bearer <token>
+##### Request Body:
+```typescript
 {
   "content": "string",
   "rating": "number (1-5)"
 }
-
+```
+##### Success Response (201):
+```typescript
 {
   "message": "Comment added successfully",
   "comment": {
@@ -154,15 +227,33 @@ interface Comment {
     "rating": "number"
   }
 }
-
+```
+### 4. Verification
+##### Verify Resource (Teacher Only)
+##### Feature: Verify Resource
+##### Method: PATCH
+##### Endpoint: /api/resources/:id/verify
+##### Headers: Authorization: Bearer <token>
+##### Request Body:
+```typescript
 {
   "verified": "boolean"
 }
-
+```
+##### Success Response (200):
+```typescript
 {
   "message": "Resource verification status updated"
 }
+```
 
+### 5. User & Community
+#### Get User Profile
+##### Feature: View User Profile
+##### Method: GET
+##### Endpoint: /api/users/:id
+##### Success Response (200):
+```typescript
 {
   "user": {
     "id": "string",
@@ -183,7 +274,14 @@ interface Comment {
     }
   ]
 }
-
+```
+#### Get Leaderboard
+##### Feature: View Top Contributors
+#####  Method: GET
+##### Endpoint: /api/leaderboard
+#####  Query Params: ?college= Filter by college
+#####  Success Response (200):
+```typescript
 {
   "leaderboard": [
     {
@@ -198,11 +296,20 @@ interface Comment {
     }
   ]
 }
-
+```
+### Error Responses
+#### All error responses follow this format:
+```typescript
 {
   "error": "string (error name)",
   "message": "string (human-readable message)",
   "details": "object (optional additional details)"
 }
-
+```
+#### Common error codes:
+##### 400 Bad Request - Invalid input data
+##### 401 Unauthorized - Missing/Invalid token
+##### 403 Forbidden - Not authorized for action
+##### 404 Not Found - Resource not found
+##### 500 Server Error - Internal server error
 
