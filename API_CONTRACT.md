@@ -155,3 +155,54 @@ interface Comment {
   }
 }
 
+{
+  "verified": "boolean"
+}
+
+{
+  "message": "Resource verification status updated"
+}
+
+{
+  "user": {
+    "id": "string",
+    "username": "string",
+    "email": "string",
+    "role": "string",
+    "college": "string",
+    "points": "number",
+    "createdAt": "ISO date"
+  },
+  "contributions": [
+    {
+      "id": "string",
+      "title": "string",
+      "type": "string",
+      "verified": "boolean",
+      "createdAt": "ISO date"
+    }
+  ]
+}
+
+{
+  "leaderboard": [
+    {
+      "rank": "number",
+      "user": {
+        "id": "string",
+        "username": "string",
+        "role": "string"
+      },
+      "points": "number",
+      "resourcesCount": "number"
+    }
+  ]
+}
+
+{
+  "error": "string (error name)",
+  "message": "string (human-readable message)",
+  "details": "object (optional additional details)"
+}
+
+
