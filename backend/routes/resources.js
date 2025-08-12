@@ -1,6 +1,6 @@
    const express = require('express');
    const router = express.Router();
-   const Resource = require('c:/Users/prerna naik/Documents/GitHub/StudentResourceHub-Aspire/backend/models/resource');
+   const Resource = require('../models/resource');
 
    // Upload Resource
    router.post('/', (req, res) => {
