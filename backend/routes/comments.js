@@ -96,10 +96,21 @@ const Comment = require('../models/comment');
 router.post('/', async (req, res) => {
     try {
         const { resourceId, userId, content, rating } = req.body;
+        
+        // Validation
+        if (!resourceId || !userId || !content || !rating) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+        
+        if (rating < 1 || rating > 5) {
+            return res.status(400).json({ error: 'Rating must be between 1 and 5' });
+        }
+        
         const comment = new Comment({ resourceId, userId, content, rating });
         await comment.save();
         res.status(201).json({ message: 'Comment added', comment });
     } catch (err) {
+        console.error('Add comment error:', err);
         res.status(500).json({ error: 'Server error' });
     }
 });
@@ -107,9 +118,12 @@ router.post('/', async (req, res) => {
 // Get Comments for a Resource
 router.get('/resource/:resourceId', async (req, res) => {
     try {
-        const comments = await Comment.find({ resourceId: req.params.resourceId });
+        const comments = await Comment.find({ resourceId: req.params.resourceId })
+            .populate('userId', 'username')
+            .sort({ createdAt: -1 });
         res.status(200).json({ comments });
     } catch (err) {
+        console.error('Get comments error:', err);
         res.status(500).json({ error: 'Server error' });
     }
 });
