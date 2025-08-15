@@ -20,6 +20,7 @@ const Resource = require('../models/resource');
  *               description: { type: string }
  *               content: { type: string }
  *               type: { type: string, enum: [note, video, question_paper, project] }
+*               type: { type: string, enum: ['note', 'video', 'question_paper', 'project'] }
  *               subject: { type: string }
  *               semester: { type: number }
  *               college: { type: string }
