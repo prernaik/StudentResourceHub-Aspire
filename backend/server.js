@@ -13,18 +13,6 @@
    const app = express();
    const PORT = process.env.PORT || 5000;
 
-   // CORS middleware
-   app.use((req, res, next) => {
-       res.header('Access-Control-Allow-Origin', '*');
-       res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-       res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-       if (req.method === 'OPTIONS') {
-           res.sendStatus(200);
-       } else {
-           next();
-       }
-   });
-
    // MongoDB connection using mongoose
     const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://sahilsahil40205:mrnXigCJ7zq66o1B@cluster0.cqk2jmq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 mongoose.connect(MONGO_URI)
@@ -33,11 +21,6 @@ mongoose.connect(MONGO_URI)
 
    // Middleware
    app.use(bodyParser.json());
-
-   // Health check endpoint
-   app.get('/health', (req, res) => {
-       res.status(200).json({ status: 'OK', message: 'Server is running' });
-   });
 
    // Swagger documentation
    const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -49,19 +32,7 @@ mongoose.connect(MONGO_URI)
     app.use('/api/users', userRoutes);
     app.use('/api/comments', commentRoutes);
 
-   // Error handling middleware
-   app.use((err, req, res, next) => {
-       console.error(err.stack);
-       res.status(500).json({ error: 'Something went wrong!' });
-   });
-
-   // 404 handler
-   app.use('*', (req, res) => {
-       res.status(404).json({ error: 'Route not found' });
-   });
-
    app.listen(PORT, () => {
        console.log(`Server is running on http://localhost:${PORT}`);
-       console.log(`API documentation available at http://localhost:${PORT}/api-docs`);
    });
    

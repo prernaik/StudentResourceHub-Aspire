@@ -33,17 +33,10 @@ const Resource = require('../models/resource');
 router.post('/', async (req, res) => {
     try {
         const { title, description, content, type, subject, semester, college, uploaderId } = req.body;
-        
-        // Validation
-        if (!title || !description || !content || !type || !subject || !semester || !college || !uploaderId) {
-            return res.status(400).json({ error: 'Missing required fields' });
-        }
-        
         const resource = new Resource({ title, description, content, type, subject, semester, college, uploaderId });
         await resource.save();
         res.status(201).json({ message: 'Resource uploaded successfully', resource });
     } catch (err) {
-        console.error('Resource upload error:', err);
         res.status(500).json({ error: 'Server error' });
     }
 });
@@ -63,23 +56,9 @@ router.post('/', async (req, res) => {
  */
 router.get('/', async (req, res) => {
     try {
-        const { type, subject, semester, college, verified } = req.query;
-        
-        // Build filter object
-        const filter = {};
-        if (type) filter.type = type;
-        if (subject) filter.subject = subject;
-        if (semester) filter.semester = parseInt(semester);
-        if (college) filter.college = college;
-        if (verified !== undefined) filter.verified = verified === 'true';
-        
-        const resources = await Resource.find(filter)
-            .populate('uploaderId', 'username role')
-            .sort({ createdAt: -1 });
-            
+        const resources = await Resource.find();
         res.status(200).json({ resources });
     } catch (err) {
-        console.error('Get resources error:', err);
         res.status(500).json({ error: 'Server error' });
     }
 });
@@ -156,16 +135,13 @@ router.get('/', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
     try {
-        const resource = await Resource.findById(req.params.id)
-            .populate('uploaderId', 'username role');
-            
+        const resource = await Resource.findById(req.params.id);
         if (resource) {
             res.status(200).json({ resource });
         } else {
             res.status(404).json({ error: 'Resource not found' });
         }
     } catch (err) {
-        console.error('Get resource error:', err);
         res.status(500).json({ error: 'Server error' });
     }
 });
