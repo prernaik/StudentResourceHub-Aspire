@@ -1,19 +1,18 @@
-// src/components/NavBar.js
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-export default function NavBar() {
+const Navbar = () => {
   return (
-    <header className="site-header">
-      <div className="container header-inner">
-        <h1 className="logo">Student Resource Hub</h1>
-        <nav className="nav">
-          <NavLink to="/" end className="nav-link">Home</NavLink>
-          <NavLink to="/upload" className="nav-link">Upload</NavLink>
-          <NavLink to="/notes" className="nav-link">Notes</NavLink>
-          <NavLink to="/about" className="nav-link">About</NavLink>
-        </nav>
-      </div>
-    </header>
+    <nav>
+      <div>Logo</div>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/resources">Resources</Link></li>
+        <li><Link to="/upload">Upload</Link></li>
+        <li><Link to="/login-signup">Login/Signup</Link></li>
+      </ul>
+    </nav>
   );
-}
+};
+
+export default Navbar;
