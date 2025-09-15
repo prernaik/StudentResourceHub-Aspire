@@ -1,5 +1,6 @@
-    const express = require('express');
-    const mongoose = require('mongoose');
+        const express = require('express');
+        const mongoose = require('mongoose');
+        const cors = require('cors');
    const bodyParser = require('body-parser');
    const swaggerJsDoc = require('swagger-jsdoc');
    const swaggerUi = require('swagger-ui-express');
@@ -19,8 +20,9 @@ mongoose.connect(MONGO_URI)
     .then(() => console.log('MongoDB connected successfully'))
     .catch((err) => console.error('MongoDB connection error:', err));
 
-   // Middleware
-   app.use(bodyParser.json());
+    // Middleware
+    app.use(cors());
+    app.use(bodyParser.json());
 
    // Swagger documentation
    const swaggerDocs = swaggerJsDoc(swaggerOptions);
