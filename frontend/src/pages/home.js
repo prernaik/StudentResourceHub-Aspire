@@ -7,6 +7,8 @@ function Home() {
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [commentsFeed, setCommentsFeed] = useState([]);
+  const [commentsLoading, setCommentsLoading] = useState(false);
   const navigate = useNavigate();
 
   // Form states
@@ -44,6 +46,19 @@ function Home() {
       setResources(data.resources || []);
     } catch (err) {
       setError('Failed to fetch resources');
+    }
+  };
+
+  const fetchAllComments = async () => {
+    setCommentsLoading(true);
+    try {
+      const res = await fetch('http://localhost:5000/api/comments');
+      const data = await res.json();
+      setCommentsFeed(data.comments || []);
+    } catch (err) {
+      setError('Failed to fetch comments feed');
+    } finally {
+      setCommentsLoading(false);
     }
   };
 
@@ -371,6 +386,15 @@ function Home() {
           >
             👤 Profile
           </li>
+          <li 
+            className={`nav-item ${activeTab === 'commentsFeed' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveTab('commentsFeed');
+              fetchAllComments();
+            }}
+          >
+            📰 Comments Feed
+          </li>
         </ul>
         
         <button className="logout-btn" onClick={handleLogout}>
@@ -665,6 +689,43 @@ function Home() {
                   disabled
                 />
               </div>
+            </div>
+          </>
+        )}
+
+        {activeTab === 'commentsFeed' && (
+          <>
+            <div className="content-header">
+              <h1>Comments Feed</h1>
+              <p>See what others are saying about resources</p>
+            </div>
+            <div className="content-body">
+              {commentsLoading ? (
+                <div>Loading comments...</div>
+              ) : (
+                commentsFeed.length === 0 ? (
+                  <div>No comments yet.</div>
+                ) : (
+                  commentsFeed.map(comment => (
+                    <div key={comment._id} className="resource-card">
+                      <div className="resource-header">
+                        <div>
+                          <div className="resource-title">
+                            {resources.find(r => r._id === comment.resourceId)?.title || 'Resource'}
+                          </div>
+                          <div className="resource-meta">
+                            By {comment.username || 'User'} • {comment.rating} ⭐
+                          </div>
+                        </div>
+                      </div>
+                      <div className="resource-description">{comment.content}</div>
+                      <div style={{marginTop: '10px', fontSize: '12px', color: '#718096'}}>
+                        {comment.createdAt ? new Date(comment.createdAt).toLocaleString() : ''}
+                      </div>
+                    </div>
+                  ))
+                )
+              )}
             </div>
           </>
         )}

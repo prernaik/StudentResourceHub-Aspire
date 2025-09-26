@@ -142,4 +142,14 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// GET all comments
+router.get('/', async (req, res) => {
+  try {
+    const comments = await Comment.find();
+    res.json({ comments });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch comments' });
+  }
+});
+
 module.exports = router;
